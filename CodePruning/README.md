@@ -1,0 +1,1 @@
+This module removes unnecessary code (like unused functions, classes, etc.) from the source code file.

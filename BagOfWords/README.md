@@ -1,0 +1,1 @@
+This module implements the [bag of words model](https://en.wikipedia.org/wiki/Bag-of-words_model).
