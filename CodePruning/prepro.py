@@ -1,6 +1,5 @@
 
 import re
-# Take doc in.
 # Remove comments.
 # Analyse and remove unused functions, classes.
 
