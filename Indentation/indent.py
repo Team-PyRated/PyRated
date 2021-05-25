@@ -23,8 +23,8 @@ def lcs(seq1 , seq2):
                 L[iter1][iter2] = max(L[iter1-1][iter2] , L[iter1][iter2-1])    #If elements do not match
     return L[n1][n2]                                                            #Return length of LCS
 
-fname1=r'C:\\Users\\admin\Documents\\original.txt'                              #Path for original file
-fname2=r'C:\\Users\\admin\Documents\\copy.txt'                                  #Path for file that is being checked for plagiarism (copy)
+fname1=r'./original.txt'                              #Path for original file
+fname2=r'./copy.txt'                                  #Path for file that is being checked for plagiarism (copy)
 
 #Read files
 f1=open(fname1,'r')
