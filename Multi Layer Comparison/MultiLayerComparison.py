@@ -5,6 +5,7 @@ import subprocess
 import re
 import nltk
 import string
+from collections import Counter
 
 def multiLayerComparison(fname1,fname2):
     ## LAYER 1 
@@ -112,9 +113,96 @@ def multiLayerComparison(fname1,fname2):
         similarity=0
         for elem in (count1 and count2):
             similarity +=1
-
         print("Percentage Variable and Operator Count Match = ",(similarity*100)/len(countfname1),'%')
+        
+    # FUNCTION SIGNATURE
+    def lines_words(file):
+    updated_lines = []
+    change_words={}
+    for line in file:
+        if(not line.startswith("//") and line!="\n"  and not line.startswith('#') and not line.startswith('using')):
+            updated_lines.append(line.lower().strip())
+        if(line.startswith("#define")):
+            words = line.split(' ')
+            #print(words)
+            replace = words[1]
+            string = ""
+            for i in range(2,len(words)):
+                string += words[i]
+                string += " "
+            string = string[:-2]
+            #print(string)
+            change_words[replace] = string
+    code=""
+    for i in range(len(updated_lines)):
+        code += updated_lines[i]
+        
+    code = code.translate({ord("}"):"}; ",ord("("):" ( ",ord("{"):" { ;"})
+    for key,value in change_words.items():
+        code=code.replace(key,value)
+        
+    lines_code=code.split(';')
+    return lines_code
 
+
+    def hashmap_function(lines_code,hashmap):
+
+        pattern ="\((.*?)\)"
+        for i in range(len(lines_code)): 
+            if ('{'in lines_code[i] and '(' in lines_code[i] and ')' in lines_code[i] and not('for ' in lines_code[i]) 
+                and not('while ' in lines_code[i]) and not('main' in lines_code[i]) and not('if ' in lines_code[i])):
+
+                substring = re.search(pattern, lines_code[i]).group(1)
+                #print(substring)
+                count_parameter=[]
+                type_parameter=[]
+                parameters = (substring.split(','))
+                #print(parameters)
+                parameter_type = [i.strip().rsplit(' ', 1)[0] for i in parameters]
+                #print(parameter_type)
+                count_parameter_all = dict(Counter(parameter_type))
+                for key,value in count_parameter_all.items():
+                    if key != "":
+                        count_parameter.append(value)
+                        type_parameter.append(key)
+
+                #print(lines_code[i])
+                words = lines_code[i].strip().split()
+                if(words[0]=='static' or words[0]=='inline'):
+                    words[0]=''
+                return_type=""
+                #print(words)
+                for j in range(len(words)):
+                    if(words[j]=='('):
+                        for k in range(j-1):
+                            return_type +=words[k]
+                            return_type +=" "
+                        break
+                #print(count_parameter)
+                function_signature=(return_type.strip(),tuple(count_parameter),tuple(type_parameter))
+                #print(function_signature)
+                hash_value=hash(function_signature)
+                if hash_value not in hashmap:
+                    hashmap[hash_value]=1
+                else:
+                    hashmap[hash_value]+=1
+                    
+    def common_percentage(hashmap1,hashmap2):
+    common=[min(hashmap1[i],hashmap2[i]) for i in hashmap1 if i in hashmap2]
+    return (2*sum(common)/(sum(hashmap1.values())+sum(hashmap2.values())))*100
+
+    hashmap1={}
+    file = open(fname1,'r')
+    lines_code=lines_words(file)
+    hashmap_function(lines_code,hashmap1)
+   
+    hashmap2={}
+    file = open(r"q03.cpp",'r')
+    lines_code=lines_words(file)
+    hashmap_function(lines_code,hashmap2)
+    percentage_same=common_percentage(hashmap1,hashmap2)
+    print("Percentage Function Signature Match = ",percentage_same,'%')
+    
     ## LAYER 2
     #  EXE COMPARISON
     def exe_comp(fname1, fname2):
