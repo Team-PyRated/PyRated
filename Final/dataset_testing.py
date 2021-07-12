@@ -5,6 +5,7 @@ from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAn
 
 functions = ["multiLayerComparison","indentComparison","varAndOperCount","functionSignature","keywordSeqCom","exe_comp"]
 n_funcs = len(functions)
+# These values decide which functions are being tested.
 start = 0
 end = start+5
 
