@@ -34,20 +34,25 @@ def makeDict(f):
         to_replace[st[1]] = ' '.join(st[2:])
     
     s = re.sub('#.*\n', '', s)
+    s = re.sub('\/\/(.*?)\n', '', s)
+    s = re.sub('\"(.*?)\"', '', s)
     s = re.sub('\s+', ' ', s)
+    s = re.sub('\/\*(.*?)\*\/', '', s)
 
     for k,v in to_replace.items():
         s = re.sub('(?:[^a-zA-Z0-9_])' + k + '(?:[^a-zA-Z0-9_])', v, s)
 
     countOperators(s, dict)
-    s = re.sub('\(.*\)', '\(\)', s)
+    s = re.sub('\((.*?)\)', '()', s)
+    print(s)
+    print('=============================')
     countVariables(s, dict)
     return dict
 
 def varAndOperCount(f1, f2):
     dict1 = makeDict(f1)
     dict2 = makeDict(f2)
-
+    print(dict1)
     # Write logic to find percent similarity
     return 60
 
@@ -59,7 +64,7 @@ if __name__ == "__main__":
     f1 = open(fname1, 'r')
     f2 = open(fname2, 'r')
 
-    print("Percentage indent match = ", varAndOperCount(f1, f2))
+    print("Percentage VariableAndOperator match = ", varAndOperCount(f1, f2))
 
     # Close the files
     f1.close()
