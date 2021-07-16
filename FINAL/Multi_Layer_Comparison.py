@@ -18,10 +18,9 @@ def multiLayerComparison(file_name1,file_name2):
     perc_list, pass_list = [None for i in range(6)], [None for i in range(6)]
     
     func_layer1 = [indentComparison, varAndOperCount, functionSignatureComp]
-    func_layer2 = [exe_comp,ksc]
-    func_layer3 = [ASTmatch]
-    size = [len(func_layer1), len(func_layer2), len(func_layer3)]
-    thresholds = [80,90,75,85,78,92]
+    func_layer2 = [exe_comp,ksc, ASTmatch]
+    size = [len(func_layer1), len(func_layer2)]
+    thresholds = [80,90,75,85,78,90]
     
     
     ## LAYER 0
@@ -44,7 +43,7 @@ def multiLayerComparison(file_name1,file_name2):
         except:
             print(f"Error in function #{i} in Layer 1")
         
-    
+    print(perc_list[:size[0]])
     if any(perc_list[:size[0]]):
         pass
     elif perc_list[:size[0]] == [None for i in range(size[0])]:
@@ -71,19 +70,11 @@ def multiLayerComparison(file_name1,file_name2):
     except:
         print("Error in ksc")
     
-    if any(perc_list[ size[0] : size[0]+size[1] ] ):
-        pass
-    elif perc_list[ size[0] : size[0]+size[1] ] == [None for i in range(size[1])]:
-        pass
-    else:
-        return False
-    
-    ## LAYER 3
     # AST COMPARISON
-    i = size[0]+size[1]
+    i = size[0]+2
     try:
         with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
-            perc_list[i] = func_layer3[0](f1, f2)
+            perc_list[i] = func_layer2[2](f1, f2)
         if perc_list[i]>thresholds[i]:
             pass_list[i] = True
         else:
@@ -91,12 +82,11 @@ def multiLayerComparison(file_name1,file_name2):
     except:
         print("Error in AST comparison")
     
-    if perc_list[i]==True:
-        return True
-    elif perc_list==[None for j in range(len(perc_list))]:
-        return None
-    elif perc_list[i] == None:
+    print(perc_list[ size[0] : size[0]+size[1] ] )
+    if any(perc_list[ size[0] : size[0]+size[1] ] ):
         return True
     else:
         return False
 
+if __name__ == '__main__':
+    print(multiLayerComparison('dataset3/Arithmetic/student1.cpp','dataset3/Arithmetic/student5.cpp'))
