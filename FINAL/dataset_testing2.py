@@ -1,6 +1,6 @@
 import subprocess
 import re
-from Multi_Layer_Comparison4 import multiLayerComparison, indentComparison, varAndOperCount, functionSignatureComp, exe_comp, ksc, ASTmatch
+from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAndOperCount, functionSignatureComp, exe_comp, ksc, ASTmatch
 
 
 functions = ["multiLayerComparison","indentComparison","varAndOperCount","functionSignature","keywordSeqCom","exe_comp", "ASTmatch"]
