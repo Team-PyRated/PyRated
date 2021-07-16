@@ -20,7 +20,8 @@ def multiLayerComparison(file_name1,file_name2):
     func_layer1 = [indentComparison, varAndOperCount, functionSignatureComp]
     func_layer2 = [exe_comp,ksc, ASTmatch]
     size = [len(func_layer1), len(func_layer2)]
-    thresholds = [80,90,75,85,78,90]
+    
+    thresholds = [80,80,75,90,90,90]
     
     
     ## LAYER 0
