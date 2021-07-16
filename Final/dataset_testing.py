@@ -1,21 +1,21 @@
 import subprocess, re
-from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAndOperCount, functionSignature, exe_comp, keywordSeqCom
+from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAndOperCount, functionSignatureComp, ksc
 
 
 
-functions = ["multiLayerComparison","indentComparison","varAndOperCount","functionSignature","keywordSeqCom","exe_comp"]
+functions = ["multiLayerComparison","indentComparison","varAndOperCount","functionSignature","ksc"]
 n_funcs = len(functions)
 # These values decide which functions are being tested.
 start = 0
-end = start+5
+end = start+4
 
 def func_num(x, f1, f2):
     if x==0: return multiLayerComparison(f1,f2)
     elif x==1: return indentComparison(f1,f2)
     elif x==2: return varAndOperCount(f1,f2)
     elif x==3: return functionSignature(f1,f2)
-    elif x==4: return keywordSeqCom(f1,f2)
-    elif x==5: return exe_comp(f1,f2)
+    elif x==4: return ksc(f1,f2)
+    #elif x==5: return exe_comp(f1,f2)
 
 with open('truth.txt', 'r') as f:
 	plag_files_str = f.read()
@@ -42,10 +42,10 @@ c_pos,c_neg, f_pos, f_neg, error = [0 for i in range(n_funcs)], [0 for i in rang
 thresholds = [None, 80, 90, 75, 78, 85]
 
 for assignment in plag_files:
-    
+
     folder = assignment[1]
     #print(folder)
-    
+
     process_list_files = subprocess.run(f"ls dataset/{folder}", shell=True, executable='/bin/bash', stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     print(process_list_files.stderr)
 
@@ -54,7 +54,7 @@ for assignment in plag_files:
     test_files = test_files_str.split('\n')
     test_files.pop()
     n_files = len(test_files)
-    
+
     for i in range(n_files//1):
         for j in range(i+1,n_files//1):
             #print(i,j)
@@ -70,11 +70,11 @@ for assignment in plag_files:
                     break
                 else:
                     actually_plagiarised = False
-            
+
             for v in range(start, end):
                 try:
                     value = func_num(v, 'dataset/'+folder+'/'+x,'dataset/'+folder+'/'+y)
-                    
+
                     if v>0:
                         if value>thresholds[v]:
                             plagiarised[v] = True
@@ -82,7 +82,7 @@ for assignment in plag_files:
                     else:
                         plagiarised[v] = value
                     #print(plagiarised[v])
-                    
+
                     if actually_plagiarised:
                         if plagiarised[v] == actually_plagiarised:
                             c_pos[v] += 1
@@ -93,7 +93,7 @@ for assignment in plag_files:
                             c_neg[v] += 1
                         else:
                             f_pos[v] += 1
-                    
+
                 except ZeroDivisionError:
                     print(functions[v],folder, x, y, '/0')
                     error[v] += 1
@@ -108,5 +108,3 @@ for i in range(start, end):
     perc_plag[i] = 100*c_pos[i]/(c_pos[i]+f_neg[i])
     perc_nplag[i] = 100*c_neg[i]/(c_neg[i]+f_pos[i])
     print(f"{functions[i]}: {perc_plag[i]}% of plag pairs and {perc_nplag[i]}% of non-plag pairs correctly identified. Tested {c_pos[i] + c_neg[i]+f_pos[i]+f_neg[i]} pairs. {error[i]} pairs gave an error.")
-
-
