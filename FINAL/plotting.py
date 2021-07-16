@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors
 import numpy as np
 from random import randint
-from Multi_Layer_Comparison4 import multiLayerComparison
+from Multi_Layer_Comparison import multiLayerComparison
 
 n_funcs = 6
 
