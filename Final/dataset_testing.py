@@ -1,21 +1,22 @@
 import subprocess
 import re
-from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAndOperCount, functionSignatureComp, exe_comp, ksc, ASTmatch
+from Multi_Layer_Comparison import multiLayerComparison, indentComparison, varAndOperCount, functionSignatureComp, exe_comp, ksc, ASTmatch, BOWComparison
 
 
-functions = ["multiLayerComparison","indentComparison","varAndOperCount","functionSignature","keywordSeqCom","exe_comp", "ASTmatch"]
+functions = ["multiLayerComparison","BOWComparison","indentComparison","varAndOperCount","functionSignatureComp","keywordSeqCom","exe_comp", "ASTmatch"]
 n_funcs = len(functions)
 start = 0
-end = start+1
+end = start+8
 
 def func_num(x, f1, f2):
     if x==0: return multiLayerComparison(f1,f2,1)
-    elif x==1: return indentComparison(f1,f2)
-    elif x==2: return varAndOperCount(f1,f2)
-    elif x==3: return functionSignature(f1,f2)
-    elif x==4: return ksc(f1,f2)
-    elif x==5: return exe_comp(f1,f2)
-    elif x==6: return ASTmatch(f1,f2)
+    elif x==1: return BOWComparison(f1,f2)
+    elif x==2: return indentComparison(f1,f2)
+    elif x==3: return varAndOperCount(f1,f2)
+    elif x==4: return functionSignatureComp(f1,f2)
+    elif x==5: return ksc(f1,f2)
+    elif x==6: return exe_comp(f1,f2)
+    elif x==7: return ASTmatch(f1,f2)
 
 with open('truth2.txt', 'r') as f:
 	plag_files_str = f.read()
@@ -36,7 +37,7 @@ for i in range(len(plag_files)):
 
 c_pos,c_neg, f_pos, f_neg, error, avg_plag, avg_nplag = [0 for i in range(n_funcs)], [0 for i in range(n_funcs)], [0 for i in range(n_funcs)], [0 for i in range(n_funcs)], [0 for i in range(n_funcs)], [0 for i in range(n_funcs)], [0 for i in range(n_funcs)]
 
-thresholds = [None, 80, 90, 75, 78, 85, 92]
+thresholds = [None, 65, 65, 65, 75, 85, 85, 45]
 data_folder = 'dataset3'
 
 for assignment in plag_files:
@@ -71,25 +72,29 @@ for assignment in plag_files:
             
             for v in range(start, end):
                 try:
-                    value = func_num(v, data_folder+'/'+folder+'/'+x,data_folder+'/'+folder+'/'+y)
-                    print('RESULT:',value,x,y)
-                    value = value[0]
+                    if v==0 or v==6:
+                        value = func_num(v, data_folder+'/'+folder+'/'+x ,data_folder+'/'+folder+'/'+y)
+                    else:
+                        with open(data_folder+'/'+folder+'/'+x, 'r') as f1, open(data_folder+'/'+folder+'/'+y, 'r') as f2:
+                            value = func_num(v, f1, f2)
+                    #print('RESULT:',value,x,y)
+                    
                     if v>0:
                         if value>thresholds[v]:
                             plagiarised[v] = True
                         else: plagiarised[v] = False
                     else:
-                        plagiarised[v] = value
+                        plagiarised[v] = value[0]
                     #print(plagiarised[v])
                     
                     if actually_plagiarised:
-                        #avg_plag[v] += value
+                        if v!=0: avg_plag[v] += value
                         if plagiarised[v] == actually_plagiarised:
                             c_pos[v] += 1
                         else:
                             f_neg[v] += 1
                     else:
-                        #avg_nplag[v] += value
+                        if v!=0: avg_nplag[v] += value
                         if plagiarised[v] == actually_plagiarised:
                             c_neg[v] += 1
                         else:
@@ -116,4 +121,4 @@ for i in range(start, end):
         print("\n")
     except ZeroDivisionError:
         print(c_pos[i],c_neg[i],f_pos[i],f_neg[i],error[i])
-    print(c_pos[i],c_neg[i],f_pos[i],f_neg[i],error[i])
+    #print(c_pos[i],c_neg[i],f_pos[i],f_neg[i],error[i])
