@@ -1,7 +1,7 @@
 import re
 
 
-from Fucntions.BagOfWords import BOWComparison
+from Functions.BagOfWords import BOWComparison
 from Functions.indent import indentComparison
 from Functions.Function_Signature import functionSignatureComp
 from Functions.Variable_And_Operator_Count import varAndOperCount
@@ -87,7 +87,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     i = sum(size[:1])
     try:
         perc_list[i] = func_layer2[0](file_name1, file_name2)
-        if perc_list[i]] > thresholds[i]:
+        if perc_list[i] > thresholds[i]:
             pass_list[i] = True
     except:
         print("Error in exe_comp")
