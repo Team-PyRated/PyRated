@@ -27,7 +27,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     func_layer3 = [ASTmatch]
     size = [len(func_layer0),len(func_layer1), len(func_layer2), len(func_layer3)]
     
-    thresholds = [65,65,65,75,85,85,45]
+    thresholds = [65,60,60,60,85,85,45]
     
     perc_list, pass_list = [None for i in range(sum(size))], [None for i in range(sum(size))]
     
