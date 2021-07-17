@@ -57,7 +57,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     #  Bag Of Words Comparison
     try:
         with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
-            perc_list[0] = func_layer0[0](f1, f2)
+            perc_list[0] = round( func_layer0[0](f1, f2) ,2)
         if perc_list[0] > thresholds[0]:
             pass_list[0] = True
     except:
@@ -74,7 +74,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
         j = i + 1
         try:
             with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
-                perc_list[j] = func_layer1[i](f1, f2)
+                perc_list[j] = round( func_layer1[i](f1, f2), 2)
             if perc_list[j]>thresholds[j]:
                 pass_list[j] = True
             else:
@@ -93,7 +93,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     # ENTER FILENAME INSTEAD OF OPEN() OBJECT.
     i = 4
     try:
-        perc_list[i] = func_layer2[0](file_name1, file_name2)
+        perc_list[i] = round( func_layer2[0](file_name1, file_name2), 2)
         if perc_list[i] > thresholds[i]:
             pass_list[i] = True
     except:
@@ -102,7 +102,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     #  KEYWORD SEQUENCE COMPARISON
     try:
         with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
-            perc_list[i+1] = func_layer2[1](f1, f2)
+            perc_list[i+1] = round( func_layer2[1](f1, f2), 2)
         if perc_list[i+1] > thresholds[i+1]:
             pass_list[i+1] = True
     except:
@@ -118,7 +118,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     i = i+2 # = 6
     try:
         with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
-            perc_list[i] = func_layer3[0](f1, f2)
+            perc_list[i] = round( func_layer3[0](f1, f2), 2)
         if perc_list[i]>thresholds[i]:
             pass_list[i] = True
         else:
