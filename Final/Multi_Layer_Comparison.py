@@ -12,7 +12,7 @@ from Functions.AST_comp import ASTmatch
 def multiLayerComparison(file_name1,file_name2, key=0):
     '''
     Pass file locations starting from the same directory as this functions's file.
-    Return True for plagiarised, False for non-plagiarised. If some test not done, None instead of percentage for that test.
+    Return True for plagiarised, False for non-plagiarised. If some test not done, whether due to an error or that layer not being reached, None instead of percentage for that test.
     If key != 0, a list returned - [result, percentage_returned_from_test_1, ... (all test functions)]
     If threshold crossed at any test, then file passed forwards, else declared non-plagiarised.
     If all tests fail to be executed (give some error), None returned.
