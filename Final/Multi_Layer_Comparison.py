@@ -13,12 +13,14 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     '''
     Pass file locations starting from the same directory as this functions's file.
     Return True for plagiarised, False for non-plagiarised. If some test not done, whether due to an error or that layer not being reached, None instead of percentage for that test.
-    If key != 0, a list returned - [result, percentage_returned_from_test_1, ... (all test functions)]
+    If key == 0, a list returned - [result, percentage_returned_from_test_1, ... (all test functions)].
+    If key==2, a dictionary returned - {"Result":result, "BOWComparison": percentage, ...}
     If threshold crossed at any test, then file passed forwards, else declared non-plagiarised.
     If all tests fail to be executed (give some error), None returned.
     Test order: BOWComparison, Indentation Comparison, Variable & Operator Count Comparison, Function Signature, Exe Comparison, Keyword Sequence Comparison, AST Comparison.'''
 
     perc_list, pass_list = [None for i in range(6)], [None for i in range(6)]
+    
     func_layer0 = [BOWComparison]
     func_layer1 = [indentComparison, varAndOperCount, functionSignatureComp]
     func_layer2 = [exe_comp,ksc]
@@ -28,13 +30,20 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     thresholds = [65,65,65,75,85,85,45]
     
     perc_list, pass_list = [None for i in range(sum(size))], [None for i in range(sum(size))]
+    
+    for_key_result = ["Result","BOWComparison", "indentComparison", "varAndOperCount", "functionSignatureComp", "exe_comp", "ksc", "ASTmatch"]
+    
     def key_result(plag): # Used to return value as per key. 'plag' should be True/False
         if key==0:
             return plag
-        else:
+        elif key==1:
             l = [plag]
             l.extend(perc_list)
             return l
+        elif key==2:
+            l = [plag]
+            l.extend(perc_list)
+            return dict(zip(for_key_result, l))
     
     ## LAYER 0
     #  String Comparison
@@ -125,4 +134,4 @@ def multiLayerComparison(file_name1,file_name2, key=0):
         return key_result(False)
 
 if __name__ == '__main__':
-    print(multiLayerComparison('dataset3/Arithmetic/student1.cpp','dataset3/Arithmetic/student5.cpp',1))
+    print(multiLayerComparison('dataset3/Arithmetic/student1.cpp','dataset3/Arithmetic/student5.cpp',2))
