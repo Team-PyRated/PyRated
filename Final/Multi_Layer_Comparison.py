@@ -54,17 +54,15 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in BOW_comp")
     
-    if any(pass_list[:size[0]]):
-        pass
-    elif pass_list[:size[0]] == [None for i in range(size[0])]:
+    if pass_list[0]==True or pass_list[0]==None:
         pass
     else:
         return key_result(False)
     
     
     ## LAYER 1
-    for i in range(size[1]):
-        j = i + size[0]
+    for i in range(3):
+        j = i + 1
         try:
             with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
                 perc_list[j] = func_layer1[i](f1, f2)
@@ -75,7 +73,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
         except:
             print(f"Error in function #{i} in Layer 1")
         
-    if any(pass_list[ size[0] : sum(size[:1]) ] ):
+    if any(pass_list[1:4]):
         pass
     else:
         return key_result(False)
@@ -84,7 +82,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     ## LAYER 2
     #  EXE COMPARISON
     # ENTER FILENAME INSTEAD OF OPEN() OBJECT.
-    i = sum(size[:1])
+    i = 4
     try:
         perc_list[i] = func_layer2[0](file_name1, file_name2)
         if perc_list[i] > thresholds[i]:
@@ -101,14 +99,14 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in ksc")
     
-    if any(pass_list[ i : sum(size[:2]) ] ):
-        return key_result(True)
+    if any(pass_list[4:6]):
+        pass
     else:
         return key_result(False)
     
     ## LAYER 3
     #  AST COMPARISON
-    i = i+size[2]
+    i = i+2 # = 6
     try:
         with open(file_name1, 'r') as f1, open(file_name2, 'r') as f2:
             perc_list[i] = func_layer3[0](f1, f2)
@@ -119,8 +117,10 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in AST comparison")
     
-    if any(pass_list[ i : sum(size) ] ):
+    if pass_list[6]==True:
         return key_result(True)
+    elif pass_list[6]==None and all(pass_list[4:6]):
+        return key_reult(True)
     else:
         return key_result(False)
 
