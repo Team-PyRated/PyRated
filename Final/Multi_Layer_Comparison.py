@@ -54,9 +54,9 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in BOW_comp")
     
-    if any(perc_list[:size[0]]):
+    if any(pass_list[:size[0]]):
         pass
-    elif perc_list[:size[0]] == [None for i in range(size[0])]:
+    elif pass_list[:size[0]] == [None for i in range(size[0])]:
         pass
     else:
         return key_result(False)
@@ -75,7 +75,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
         except:
             print(f"Error in function #{i} in Layer 1")
         
-    if any(perc_list[ size[0] : sum(size[:1]) ] ):
+    if any(pass_list[ size[0] : sum(size[:1]) ] ):
         pass
     else:
         return key_result(False)
@@ -101,7 +101,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in ksc")
     
-    if any(perc_list[ i : sum(size[:2]) ] ):
+    if any(pass_list[ i : sum(size[:2]) ] ):
         return key_result(True)
     else:
         return key_result(False)
@@ -119,7 +119,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     except:
         print("Error in AST comparison")
     
-    if any(perc_list[ i : sum(size) ] ):
+    if any(pass_list[ i : sum(size) ] ):
         return key_result(True)
     else:
         return key_result(False)
