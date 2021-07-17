@@ -43,7 +43,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
         text1 = re.sub(r"(//.*?$)|(/\*.*?\*\\)","",f1.read(), flags = re.DOTALL|re.MULTILINE)
         text2 = re.sub(r"(//.*?$)|(/\*.*?\*\\)","",f2.read(), flags = re.DOTALL|re.MULTILINE)
         if text1 == text2:
-            return True
+            return key_result(True)
     
     #  Bag Of Words Comparison
     try:
@@ -78,7 +78,7 @@ def multiLayerComparison(file_name1,file_name2, key=0):
     if any(perc_list[ size[0] : sum(size[:1]) ] ):
         pass
     else:
-        return False
+        return key_result(False)
     
     
     ## LAYER 2
