@@ -2,7 +2,7 @@
 This project aims to develop a source code plagiarism detector using Python. It is a part of [Seasons of Code](https://wncc-iitb.org/soc/) programme conducted by [The Web and Coding Club, IIT Bombay](https://wncc-iitb.org/).
 
 # The Results
-The directory named "Final" contains the final codes files, and a few other files for testing and plotting test results.
+The directory named "Final" contains the final codes files, and a few other files for testing and plotting test results. The sub-directory inside Final named "Results" has some screenshots of results obtained during various stages of testing.
 
 ## Mentors
 - [Tulip Pandey](https://github.com/tulip16)
